@@ -20,10 +20,10 @@ void	play(SDL_Surface *ecran)
   //chargement des sprites
   
   mur = IMG_Load("mur.png");
-  heros[BAS] = IMG_Load("mario_bas.gif");
-  heros[GAUCHE] = IMG_Load("mario_gauche.gif");
-  heros[HAUT] = IMG_Load("mario_haut.gif");
-  heros[DROITE] = IMG_Load("mario_droite.gif");
+  heros[BAS] = IMG_Load("heros_avant.gif");
+  heros[GAUCHE] = IMG_Load("heros_gauche.gif");
+  heros[HAUT] = IMG_Load("heros_arrière.gif");
+  heros[DROITE] = IMG_Load("heros_droite.gif");
   
   herosActuel = heros[BAS];
   if (!chargerNiveau(carte))
@@ -91,6 +91,7 @@ void	play(SDL_Surface *ecran)
 	}
       pos.x = posPlayer.x * TAILLE_BLOC;
       pos.y = posPlayer.y * TAILLE_BLOC;
+      SDL_SetColorKey(herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(herosActuel->format, 0, 0, 0));
       SDL_BlitSurface(herosActuel, NULL, ecran, &pos);
       SDL_Flip(ecran);
     }
