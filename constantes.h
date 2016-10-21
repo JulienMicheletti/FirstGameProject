@@ -8,6 +8,6 @@
 #define LENGTH			TAILLE_BLOC * NB_BLOCS_HAUTEUR
 
 enum{HAUT, BAS, GAUCHE, DROITE};
-enum{VIDE, MUR, HEROS};
+enum{VIDE, MUR, HEROS, FIN};
 
 #endif

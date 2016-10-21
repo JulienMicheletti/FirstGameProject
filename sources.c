@@ -7,12 +7,22 @@
 #include "game.h"
 #include "level.h"
 
-int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
+FILE*	selectNiveau(FILE* fichier, int select)
+{
+  if (select == 0)
+    fichier = fopen("niveau.lvl", "r");
+  else if (select == 1)
+    fichier = fopen("niveau2.lvl", "r");
+  return (fichier);
+}
+
+int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 {
   FILE*	fichier = NULL;
   char	ligneFichier[NB_BLOCS_LARGEUR * NB_BLOCS_HAUTEUR + 1] = {0};
   int	i = 0, j = 0;
-  fichier = fopen("niveau.lvl", "r");
+
+  fichier = selectNiveau(fichier, select);
   if (fichier == NULL)
     return 0;
   fgets(ligneFichier, NB_BLOCS_LARGEUR * NB_BLOCS_HAUTEUR + 1, fichier);
@@ -34,31 +44,9 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 	    case '3':
 	      niveau[j][i] = 3;
 	      break;
-	    case '4':
-	      niveau[j][i] = 4;
-	      break;
 	    }
 	}
     }
   fclose(fichier);
   return 1;
-}
-
-int	SaveLevel(int niveau[][NB_BLOCS_HAUTEUR])
-{
-  FILE*	fichier = NULL;
-  int	i = 0, j = 0;
-
-  fichier = fopen("niveaux.lvl", "w");
-  if (fichier == NULL)
-    return 0;
-   for (i = 0 ; i < NB_BLOCS_LARGEUR ; i++)
-    {
-      for (j = 0 ; j < NB_BLOCS_HAUTEUR ; j++)
-	{
-	  fprintf(fichier, "%d", niveau[j][i]);
-	}
-    }
-   fclose(fichier);
-   return 1;
 }
