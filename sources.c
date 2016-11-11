@@ -44,6 +44,9 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 	    case '3':
 	      niveau[j][i] = 3;
 	      break;
+	    case '4':
+	      niveau[j][i] = 4;
+	      break;
 	    }
 	}
     }
