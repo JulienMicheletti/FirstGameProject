@@ -7,37 +7,17 @@
 #include "game.h"
 #include "level.h"
 
-SDL_Rect	PositionP(int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR], SDL_Rect posPacerelle)
-{
-  int	i = 0, j = 0;
-  
-  for (i = 0 ; i < NB_BLOCS_LARGEUR ; i++)
-    {
-      for (j = 0 ; j < NB_BLOCS_HAUTEUR ; j++)
-  	{
-  	  if (carte[i][j] == PACERELLE)
-  	    {
-  	      posPacerelle.x = i;
-  	      posPacerelle.y = j;
-  	      carte[i][j] = VIDE;
-  	    }
-  	}
-    }
-  return(posPacerelle);
-}
-
 void	play(SDL_Surface *ecran)
 {
   SDL_Surface	*heros[4] = {NULL};
   SDL_Surface	*mur = NULL, *herosActuel = NULL, *fin = NULL, *pacerelle = NULL;
-  SDL_Rect	pos, posPlayer, posP, posF;
+  SDL_Rect	pos, posPlayer;
   SDL_Event	event;
   int	continuer = 1, i = 0, j = 0, check = 0, select = 0;
   int	now = 0, prev = 0;
   int	carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = {0};
 
   mur = IMG_Load("mur.png");
-  pacerelle = IMG_Load("mur.png");
   heros[BAS] = IMG_Load("heros_avant.gif");
   heros[GAUCHE] = IMG_Load("heros_gauche.gif");
   heros[HAUT] = IMG_Load("heros_arrière.gif");
@@ -48,8 +28,6 @@ void	play(SDL_Surface *ecran)
   if (!chargerNiveau(carte, select))
     exit(EXIT_FAILURE);
   posPlayer = PositionJoueur(carte, posPlayer);
-  posP = PositionP(carte, posP);
-  SDL_EnableKeyRepeat(100, 100);
   while (continuer)
     {
       SDL_PollEvent(&event);
@@ -90,28 +68,16 @@ void	play(SDL_Surface *ecran)
       	    {
       	      pos.x = i * TAILLE_BLOC;
       	      pos.y = j * TAILLE_BLOC;
-      	      switch(carte[i][j])
-      		{
-      		case MUR:
-      		  SDL_BlitSurface(mur, NULL, ecran, &pos);
-      		  break;
-		case FIN: 
+	      if (carte[i][j] == MUR)
+		SDL_BlitSurface(mur, NULL, ecran, &pos);
+	      if (carte[i][j] == FIN)
+		{
 		  SDL_BlitSurface(fin, NULL, ecran, &pos);
 		  check = 1;
-      		  break;
-		case PACERELLE:
-		  SDL_BlitSurface(pacerelle, NULL, ecran, &pos);
-		  break;
-      		}
+		}
       	    }
       	}
-	now = SDL_GetTicks();
-	if (now - prev > 30)
-	  {
-	    posP.x++;
-	    prev = now;
-	  }
-      if (!check)
+       if (!check)
       	{
       	  SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
       	  select++;
@@ -120,15 +86,12 @@ void	play(SDL_Surface *ecran)
       	  chargerNiveau(carte, select);
       	  posPlayer = PositionJoueur(carte, posPlayer);
       	}
-      posF.x = posP.x * TAILLE_BLOC;
-      posF.y = posP.y * TAILLE_BLOC;
-      pos.x = posPlayer.x * TAILLE_BLOC;
-      pos.y = posPlayer.y * TAILLE_BLOC;
-      SDL_SetColorKey(pacerelle, SDL_SRCCOLORKEY, SDL_MapRGB(pacerelle->format, 0, 0, 0));
-      SDL_BlitSurface(pacerelle, NULL, ecran, &posF);
-      SDL_SetColorKey(herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(herosActuel->format, 0, 0, 0));
-      SDL_BlitSurface(herosActuel, NULL, ecran, &pos);
-      SDL_Flip(ecran);
+       SDL_Delay(30);
+       pos.x = posPlayer.x * TAILLE_BLOC;
+       pos.y = posPlayer.y * TAILLE_BLOC;
+       SDL_SetColorKey(herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(herosActuel->format, 0, 0, 0));
+       SDL_BlitSurface(herosActuel, NULL, ecran, &pos);
+       SDL_Flip(ecran);
     }
   SDL_EnableKeyRepeat(0, 0);
   SDL_FreeSurface(mur);
@@ -138,56 +101,51 @@ void	play(SDL_Surface *ecran)
 
 void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
 {
-  switch(direction)
+  if (direction == HAUT)
     {
-    case HAUT:
       if (pos->y - 1 < 0)
-	break;
+	return;
       else if (carte[pos->x][pos->y - 1] == MUR)
-	break;
-      else if (carte[pos->x][pos->y] == FIN)
-	{
-	  carte[pos->x][pos->y] = VIDE;
-	  break;
-	}
+	return;
+      else if (carte[pos->x][pos->y - 1] == FIN)
+	carte[pos->x][pos->y - 1] = VIDE;
       pos->y--;
-      break;
-    case BAS:
+      return;
+    }
+  else if (direction == BAS)
+    {
       if (pos->y + 1 >= NB_BLOCS_HAUTEUR)
-	break;
+	return;
       else if (carte[pos->x][pos->y + 1] == MUR)
-	break;
-      else if (carte[pos->x][pos->y] == FIN)
-	{
-	  carte[pos->x][pos->y] = VIDE;
-	  break;
-	}
+	return;
+      else if (carte[pos->x][pos->y + 1] == FIN)
+	carte[pos->x][pos->y + 1] = VIDE;
       pos->y++;
-      break;
-    case GAUCHE:
+      return;
+    }
+  if (direction == GAUCHE)
+    {
       if (pos->x - 1 < 0)
-	break;
+	return;
       else if (carte[pos->x - 1][pos->y] == MUR)
-	break;
-      else if (carte[pos->x][pos->y] == FIN)
-	{
-	  carte[pos->x][pos->y] = VIDE;
-	  break;
-	}
+        return;
+      else if (carte[pos->x - 1][pos->y] == FIN)
+	carte[pos->x - 1][pos->y] = VIDE;
       pos->x--;
-      break;
-    case DROITE:
+      return;
+    }
+  if (direction == DROITE)
+    {
       if (pos->x + 1 > NB_BLOCS_LARGEUR)
-	break;
+	return;
       else if (carte[pos->x + 1][pos->y] == MUR)
-	break;
-      else if (carte[pos->x][pos->y] == FIN)
+	return;
+      else if (carte[pos->x + 1][pos->y] == FIN)
 	{
-	  carte[pos->x][pos->y] = VIDE;
-	  break;
+	  carte[pos->x + 1][pos->y] = VIDE;
 	}
       pos->x++;
-      break;
+      return;
     }
 }
 

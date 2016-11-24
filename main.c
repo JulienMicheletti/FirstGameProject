@@ -14,7 +14,7 @@ int	main(int ac, char **av)
   int		continuer;
   
   continuer = 1;
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
   ecran = SDL_SetVideoMode(WIDHT, LENGTH, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   SDL_WM_SetCaption("My game", NULL);
   while (continuer)
