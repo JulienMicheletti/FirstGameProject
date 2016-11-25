@@ -7,22 +7,32 @@
 #include "game.h"
 #include "level.h"
 
+void	moovebloc(int *first, int *second)
+{
+  if (*first == BLOC)
+    {
+      *second = BLOC;
+      *first = VIDE;
+    }
+}
+
 void	play(SDL_Surface *ecran)
 {
   SDL_Surface	*heros[4] = {NULL};
-  SDL_Surface	*mur = NULL, *herosActuel = NULL, *fin = NULL, *pacerelle = NULL;
+  SDL_Surface	*mur = NULL, *herosActuel = NULL, *fin = NULL, *bloc = NULL, *vide = NULL;
   SDL_Rect	pos, posPlayer;
   SDL_Event	event;
   int	continuer = 1, i = 0, j = 0, check = 0, select = 0;
-  int	now = 0, prev = 0;
   int	carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = {0};
 
   mur = IMG_Load("mur.png");
-  heros[BAS] = IMG_Load("heros_avant.gif");
-  heros[GAUCHE] = IMG_Load("heros_gauche.gif");
-  heros[HAUT] = IMG_Load("heros_arrière.gif");
-  heros[DROITE] = IMG_Load("heros_droite.gif");
+  bloc = IMG_Load("bloc.gif");
+  heros[BAS] = IMG_Load("Devant.png");
+  heros[GAUCHE] = IMG_Load("gauche.png");
+  heros[HAUT] = IMG_Load("derriere.png");
+  heros[DROITE] = IMG_Load("Droite.png");
   fin = IMG_Load("objectif.png");
+  vide = IMG_Load("sol.png");
 
   herosActuel = heros[BAS];
   if (!chargerNiveau(carte, select))
@@ -75,6 +85,11 @@ void	play(SDL_Surface *ecran)
 		  SDL_BlitSurface(fin, NULL, ecran, &pos);
 		  check = 1;
 		}
+	      if (carte[i][j] == BLOC)
+		SDL_BlitSurface(bloc, NULL, ecran, &pos);
+	      if (carte[i][j] == VIDE)
+		SDL_BlitSurface(vide, NULL, ecran, &pos);
+	      
       	    }
       	}
        if (!check)
@@ -109,6 +124,9 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
 	return;
       else if (carte[pos->x][pos->y - 1] == FIN)
 	carte[pos->x][pos->y - 1] = VIDE;
+      if (carte[pos->x][pos->y - 1] == BLOC && (pos->y - 2 < 0 || carte[pos->x][pos->y - 2] == MUR || carte[pos->x][pos->y - 2] == BLOC))
+	return;
+      moovebloc(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
       pos->y--;
       return;
     }
@@ -120,10 +138,13 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
 	return;
       else if (carte[pos->x][pos->y + 1] == FIN)
 	carte[pos->x][pos->y + 1] = VIDE;
+      if (carte[pos->x][pos->y + 1] == BLOC && (pos->y + 2 < 0 || carte[pos->x][pos->y + 2] == MUR || carte[pos->x][pos->y + 2] == BLOC))
+	return;
+      moovebloc(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
       pos->y++;
       return;
     }
-  if (direction == GAUCHE)
+  else if (direction == GAUCHE)
     {
       if (pos->x - 1 < 0)
 	return;
@@ -131,19 +152,23 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
         return;
       else if (carte[pos->x - 1][pos->y] == FIN)
 	carte[pos->x - 1][pos->y] = VIDE;
+      if (carte[pos->x - 1][pos->y] == BLOC && (pos->x - 2 < 0 || carte[pos->x - 2][pos->y] == MUR || carte[pos->x - 2][pos->y] == BLOC))
+	return;
+      moovebloc(&carte[pos->x - 1][pos->y], &carte[pos->x - 2][pos->y]);
       pos->x--;
       return;
     }
-  if (direction == DROITE)
+  else if (direction == DROITE)
     {
       if (pos->x + 1 > NB_BLOCS_LARGEUR)
 	return;
       else if (carte[pos->x + 1][pos->y] == MUR)
 	return;
       else if (carte[pos->x + 1][pos->y] == FIN)
-	{
-	  carte[pos->x + 1][pos->y] = VIDE;
-	}
+	carte[pos->x + 1][pos->y] = VIDE;
+      if (carte[pos->x + 1][pos->y] == BLOC && (pos->x + 2 < 0 || carte[pos->x + 2][pos->y] == MUR || carte[pos->x + 2][pos->y] == BLOC))
+	return;
+      moovebloc(&carte[pos->x + 1][pos->y], &carte[pos->x + 2][pos->y]);
       pos->x++;
       return;
     }
