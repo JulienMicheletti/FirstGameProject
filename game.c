@@ -25,14 +25,14 @@ void	play(SDL_Surface *ecran)
   int	continuer = 1, i = 0, j = 0, check = 0, select = 0;
   int	carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = {0};
 
-  mur = IMG_Load("mur.png");
-  bloc = IMG_Load("bloc.gif");
-  heros[BAS] = IMG_Load("Devant.png");
-  heros[GAUCHE] = IMG_Load("gauche.png");
-  heros[HAUT] = IMG_Load("derriere.png");
-  heros[DROITE] = IMG_Load("Droite.png");
-  fin = IMG_Load("objectif.png");
-  vide = IMG_Load("sol.png");
+  mur = IMG_Load("sprites/mur.png");
+  bloc = IMG_Load("sprites/bloc.png");
+  heros[BAS] = IMG_Load("sprites/Devant.png");
+  heros[GAUCHE] = IMG_Load("sprites/gauche.png");
+  heros[HAUT] = IMG_Load("sprites/derriere.png");
+  heros[DROITE] = IMG_Load("sprites/Droite.png");
+  fin = IMG_Load("sprites/objectif.png");
+  vide = IMG_Load("sprites/sol.png");
 
   herosActuel = heros[BAS];
   if (!chargerNiveau(carte, select))
@@ -101,7 +101,7 @@ void	play(SDL_Surface *ecran)
       	  chargerNiveau(carte, select);
       	  posPlayer = PositionJoueur(carte, posPlayer);
       	}
-       SDL_Delay(30);
+       SDL_Delay(15);
        pos.x = posPlayer.x * TAILLE_BLOC;
        pos.y = posPlayer.y * TAILLE_BLOC;
        SDL_SetColorKey(herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(herosActuel->format, 0, 0, 0));

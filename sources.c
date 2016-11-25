@@ -10,7 +10,7 @@
 FILE*	selectNiveau(FILE* fichier, int select)
 {
   if (select == 0)
-    fichier = fopen("niveau.lvl", "r");
+    fichier = fopen("niveaux/niveau.lvl", "r");
   /* else if (select == 1) */
   /*   fichier = fopen("niveau2.lvl", "r"); */
   return (fichier);
