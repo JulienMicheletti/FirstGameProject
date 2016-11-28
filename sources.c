@@ -49,6 +49,8 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 	    niveau[j][i] = 3;
 	  if (stock[(i * NB_BLOCS_LARGEUR) + j] == '4')
 	    niveau[j][i] = 4;
+	  if (stock[(i * NB_BLOCS_LARGEUR) + j] == '5')
+	    niveau[j][i] = 5;
 	}
     }
   fclose(fichier);

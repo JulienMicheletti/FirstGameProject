@@ -2,7 +2,7 @@ CC=		gcc
 
 RM=		rm -rf *~
 
-CFLAGS=		-lSDL -lSDL_image
+CFLAGS=		-lSDL -lSDL_image -lSDL_ttf
 
 NAME=		game
 

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-
 #include "constantes.h"
 #include "game.h"
 #include "level.h"
@@ -20,6 +19,7 @@ void	play(SDL_Surface *ecran)
 {
   SDL_Surface	*heros[4] = {NULL};
   SDL_Surface	*mur = NULL, *herosActuel = NULL, *fin = NULL, *bloc = NULL, *vide = NULL;
+  SDL_Surface	*piege = NULL, *piegeON = NULL;
   SDL_Rect	pos, posPlayer;
   SDL_Event	event;
   int	continuer = 1, i = 0, j = 0, check = 0, select = 0;
@@ -33,6 +33,8 @@ void	play(SDL_Surface *ecran)
   heros[DROITE] = IMG_Load("sprites/Droite.png");
   fin = IMG_Load("sprites/objectif.png");
   vide = IMG_Load("sprites/sol.png");
+  piege = IMG_Load("sprites/piege.gif");
+  piegeON = IMG_Load("sprites/piegeon.png");
 
   herosActuel = heros[BAS];
   if (!chargerNiveau(carte, select))
@@ -41,34 +43,32 @@ void	play(SDL_Surface *ecran)
   while (continuer)
     {
       SDL_PollEvent(&event);
-      switch(event.type)
-  	{
-  	case SDL_QUIT:
+      if (event.type == SDL_QUIT)
   	  continuer = 0;
-  	  break;
-  	case SDL_KEYDOWN:
-  	  switch(event.key.keysym.sym)
-  	    {
-  	    case SDLK_ESCAPE:
-  	      continuer = 0;
-  	      break;
-  	    case SDLK_UP:
+      else if (event.type == SDL_KEYDOWN)
+	{
+	  if (event.key.keysym.sym == SDLK_ESCAPE)
+	    continuer = 0;
+	  else if (event.key.keysym.sym == SDLK_UP)
+	    {
   	      herosActuel = heros[HAUT];
 	      moovePlayer(carte, &posPlayer, HAUT);
-  	      break;
-  	    case SDLK_DOWN:
+	    }
+	  else if (event.key.keysym.sym == SDLK_DOWN)
+	    {
   	      herosActuel = heros[BAS];
 	      moovePlayer(carte, &posPlayer, BAS);
-	      break;
-  	    case SDLK_LEFT:
+	    }
+	  else if (event.key.keysym.sym == SDLK_LEFT)
+	    {
   	      herosActuel = heros[GAUCHE];
 	      moovePlayer(carte, &posPlayer, GAUCHE);
-	      break;
-  	    case SDLK_RIGHT:
+	    }
+	  else if (event.key.keysym.sym == SDLK_RIGHT)
+	    {
   	      herosActuel = heros[DROITE];
 	      moovePlayer(carte, &posPlayer, DROITE);
-	      break;
-  	    }
+	    }
   	}
       SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
       check = 0;
@@ -89,6 +89,10 @@ void	play(SDL_Surface *ecran)
 		SDL_BlitSurface(bloc, NULL, ecran, &pos);
 	      if (carte[i][j] == VIDE)
 		SDL_BlitSurface(vide, NULL, ecran, &pos);
+	      if (carte[i][j] == PIEGE)
+	      	SDL_BlitSurface(piege, NULL, ecran, &pos);
+	      if (carte[i][j] == PIEGEON)
+	      	SDL_BlitSurface(piegeON, NULL, ecran, &pos);
 	      
       	    }
       	}
@@ -124,7 +128,11 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
 	return;
       else if (carte[pos->x][pos->y - 1] == FIN)
 	carte[pos->x][pos->y - 1] = VIDE;
-      if (carte[pos->x][pos->y - 1] == BLOC && (pos->y - 2 < 0 || carte[pos->x][pos->y - 2] == MUR || carte[pos->x][pos->y - 2] == BLOC))
+      else if (carte[pos->x][pos->y - 1] == BLOC && (pos->y - 2 < 0 || carte[pos->x][pos->y - 2] == MUR || carte[pos->x][pos->y - 2] == BLOC))
+	return;
+      else if (carte[pos->x][pos->y] == PIEGE)
+	carte[pos->x][pos->y] = PIEGEON;
+      else if (carte[pos->x][pos->y - 1] == PIEGEON)
 	return;
       moovebloc(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
       pos->y--;
@@ -138,7 +146,11 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
 	return;
       else if (carte[pos->x][pos->y + 1] == FIN)
 	carte[pos->x][pos->y + 1] = VIDE;
-      if (carte[pos->x][pos->y + 1] == BLOC && (pos->y + 2 < 0 || carte[pos->x][pos->y + 2] == MUR || carte[pos->x][pos->y + 2] == BLOC))
+      else if (carte[pos->x][pos->y + 1] == BLOC && (pos->y + 2 < 0 || carte[pos->x][pos->y + 2] == MUR || carte[pos->x][pos->y + 2] == BLOC))
+	return;
+      else if (carte[pos->x][pos->y] == PIEGE)
+	carte[pos->x][pos->y] = PIEGEON;
+      else if (carte[pos->x][pos->y + 1] == PIEGEON)
 	return;
       moovebloc(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
       pos->y++;
@@ -152,7 +164,11 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
         return;
       else if (carte[pos->x - 1][pos->y] == FIN)
 	carte[pos->x - 1][pos->y] = VIDE;
-      if (carte[pos->x - 1][pos->y] == BLOC && (pos->x - 2 < 0 || carte[pos->x - 2][pos->y] == MUR || carte[pos->x - 2][pos->y] == BLOC))
+      else if (carte[pos->x - 1][pos->y] == BLOC && (pos->x - 2 < 0 || carte[pos->x - 2][pos->y] == MUR || carte[pos->x - 2][pos->y] == BLOC))
+	return;
+      else if (carte[pos->x][pos->y] == PIEGE)
+	carte[pos->x][pos->y] = PIEGEON;
+      else if (carte[pos->x - 1][pos->y] == PIEGEON)
 	return;
       moovebloc(&carte[pos->x - 1][pos->y], &carte[pos->x - 2][pos->y]);
       pos->x--;
@@ -167,6 +183,10 @@ void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
       else if (carte[pos->x + 1][pos->y] == FIN)
 	carte[pos->x + 1][pos->y] = VIDE;
       if (carte[pos->x + 1][pos->y] == BLOC && (pos->x + 2 < 0 || carte[pos->x + 2][pos->y] == MUR || carte[pos->x + 2][pos->y] == BLOC))
+	return;
+      else if (carte[pos->x][pos->y] == PIEGE)
+	carte[pos->x][pos->y] = PIEGEON;
+      else if (carte[pos->x + 1][pos->y] == PIEGEON)
 	return;
       moovebloc(&carte[pos->x + 1][pos->y], &carte[pos->x + 2][pos->y]);
       pos->x++;
