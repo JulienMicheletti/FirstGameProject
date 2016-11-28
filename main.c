@@ -3,10 +3,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
-
 #include "constantes.h"
 #include "game.h"
-#include "level.h"
 
 int	main(int ac, char **av)
 {

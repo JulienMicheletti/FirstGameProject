@@ -8,7 +8,8 @@ NAME=		game
 
 SRC=		main.c \
 		game.c \
-		sources.c 
+		read.c \
+		init.c
 
 OBJ=		$(SRC:.c=.o)
 

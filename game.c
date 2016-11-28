@@ -4,7 +4,6 @@
 #include <SDL/SDL_image.h>
 #include "constantes.h"
 #include "game.h"
-#include "level.h"
 
 void	moovebloc(int *first, int *second)
 {
@@ -17,105 +16,95 @@ void	moovebloc(int *first, int *second)
 
 void	play(SDL_Surface *ecran)
 {
-  SDL_Surface	*heros[4] = {NULL};
-  SDL_Surface	*mur = NULL, *herosActuel = NULL, *fin = NULL, *bloc = NULL, *vide = NULL;
-  SDL_Surface	*piege = NULL, *piegeON = NULL;
+  sprite	sp;
+  compteur	count;
   SDL_Rect	pos, posPlayer;
   SDL_Event	event;
-  int	continuer = 1, i = 0, j = 0, check = 0, select = 0;
   int	carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = {0};
 
-  mur = IMG_Load("sprites/mur.png");
-  bloc = IMG_Load("sprites/bloc.png");
-  heros[BAS] = IMG_Load("sprites/Devant.png");
-  heros[GAUCHE] = IMG_Load("sprites/gauche.png");
-  heros[HAUT] = IMG_Load("sprites/derriere.png");
-  heros[DROITE] = IMG_Load("sprites/Droite.png");
-  fin = IMG_Load("sprites/objectif.png");
-  vide = IMG_Load("sprites/sol.png");
-  piege = IMG_Load("sprites/piege.gif");
-  piegeON = IMG_Load("sprites/piegeon.png");
-
-  herosActuel = heros[BAS];
-  if (!chargerNiveau(carte, select))
+  count = init_compteur(count);
+  sp = init_sprite(sp);
+  sp.herosActuel = sp.heros[BAS];
+  if (!chargerNiveau(carte, count.select))
     exit(EXIT_FAILURE);
   posPlayer = PositionJoueur(carte, posPlayer);
-  while (continuer)
+  while (count.continuer)
     {
       SDL_PollEvent(&event);
       if (event.type == SDL_QUIT)
-  	  continuer = 0;
+  	  count.continuer = 0;
       else if (event.type == SDL_KEYDOWN)
 	{
 	  if (event.key.keysym.sym == SDLK_ESCAPE)
-	    continuer = 0;
+	    count.continuer = 0;
 	  else if (event.key.keysym.sym == SDLK_UP)
 	    {
-  	      herosActuel = heros[HAUT];
+  	      sp.herosActuel = sp.heros[HAUT];
 	      moovePlayer(carte, &posPlayer, HAUT);
 	    }
 	  else if (event.key.keysym.sym == SDLK_DOWN)
 	    {
-  	      herosActuel = heros[BAS];
+  	      sp.herosActuel = sp.heros[BAS];
 	      moovePlayer(carte, &posPlayer, BAS);
 	    }
 	  else if (event.key.keysym.sym == SDLK_LEFT)
 	    {
-  	      herosActuel = heros[GAUCHE];
+  	      sp.herosActuel = sp.heros[GAUCHE];
 	      moovePlayer(carte, &posPlayer, GAUCHE);
 	    }
 	  else if (event.key.keysym.sym == SDLK_RIGHT)
 	    {
-  	      herosActuel = heros[DROITE];
+  	      sp.herosActuel = sp.heros[DROITE];
 	      moovePlayer(carte, &posPlayer, DROITE);
 	    }
   	}
       SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
-      check = 0;
-      for (i = 0 ; i < NB_BLOCS_LARGEUR ; i++)
+      count.check = 0;
+      for (count.i = 0 ; count.i < NB_BLOCS_LARGEUR ; count.i++)
       	{
-      	  for (j = 0 ; j < NB_BLOCS_HAUTEUR ; j++)
+      	  for (count.j = 0 ; count.j < NB_BLOCS_HAUTEUR ; count.j++)
       	    {
-      	      pos.x = i * TAILLE_BLOC;
-      	      pos.y = j * TAILLE_BLOC;
-	      if (carte[i][j] == MUR)
-		SDL_BlitSurface(mur, NULL, ecran, &pos);
-	      if (carte[i][j] == FIN)
+      	      pos.x = count.i * TAILLE_BLOC;
+      	      pos.y = count.j * TAILLE_BLOC;
+	      if (carte[count.i][count.j] == MUR)
+		SDL_BlitSurface(sp.mur, NULL, ecran, &pos);
+	      if (carte[count.i][count.j] == FIN)
 		{
-		  SDL_BlitSurface(fin, NULL, ecran, &pos);
-		  check = 1;
+		  SDL_BlitSurface(sp.fin, NULL, ecran, &pos);
+		  count.check = 1;
 		}
-	      if (carte[i][j] == BLOC)
-		SDL_BlitSurface(bloc, NULL, ecran, &pos);
-	      if (carte[i][j] == VIDE)
-		SDL_BlitSurface(vide, NULL, ecran, &pos);
-	      if (carte[i][j] == PIEGE)
-	      	SDL_BlitSurface(piege, NULL, ecran, &pos);
-	      if (carte[i][j] == PIEGEON)
-	      	SDL_BlitSurface(piegeON, NULL, ecran, &pos);
+	      if (carte[count.i][count.j] == BLOC)
+		SDL_BlitSurface(sp.bloc, NULL, ecran, &pos);
+	      if (carte[count.i][count.j] == VIDE)
+		SDL_BlitSurface(sp.vide, NULL, ecran, &pos);
+	      if (carte[count.i][count.j] == PIEGE)
+	      	SDL_BlitSurface(sp.piege, NULL, ecran, &pos);
+	      if (carte[count.i][count.j] == PIEGEON)
+	      	SDL_BlitSurface(sp.piegeON, NULL, ecran, &pos);
 	      
       	    }
       	}
-       if (!check)
+       if (!count.check)
       	{
       	  SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
-      	  select++;
-      	  if (select == 3)
-      	    continuer = 0;
-      	  chargerNiveau(carte, select);
+      	  count.select++;
+	  printf("%d\n", count.select);
+      	  if (count.select == 3)
+      	    count.continuer = 0;
+      	  chargerNiveau(carte, count.select);
       	  posPlayer = PositionJoueur(carte, posPlayer);
       	}
        SDL_Delay(15);
        pos.x = posPlayer.x * TAILLE_BLOC;
        pos.y = posPlayer.y * TAILLE_BLOC;
-       SDL_SetColorKey(herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(herosActuel->format, 0, 0, 0));
-       SDL_BlitSurface(herosActuel, NULL, ecran, &pos);
+       SDL_SetColorKey(sp.herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(sp.herosActuel->format, 0, 0, 0));
+       SDL_BlitSurface(sp.herosActuel, NULL, ecran, &pos);
        SDL_Flip(ecran);
     }
   SDL_EnableKeyRepeat(0, 0);
-  SDL_FreeSurface(mur);
-  for(i = 0 ; i < 4 ; i++)
-    SDL_FreeSurface(heros[i]);
+  SDL_FreeSurface(sp.mur);
+  for(count.i = 0 ; count.i < 4 ; count.i++)
+    SDL_FreeSurface(sp.heros[count.i]);
 }
 
 void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction)
