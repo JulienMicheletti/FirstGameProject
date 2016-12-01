@@ -9,7 +9,8 @@ NAME=		game
 SRC=		main.c \
 		game.c \
 		read.c \
-		init.c
+		init.c \
+		moove.c
 
 OBJ=		$(SRC:.c=.o)
 
