@@ -1,0 +1,71 @@
+// Include
+
+#include <stdlib.h>
+#include <stdio.h>
+
+// Sert à se retrouver plus facilement avec les IDs et à définir des groupes et catégories.
+
+// Define
+
+
+// Examples : 
+
+#define FloorWood			11
+#define	FloorStone			12
+
+#define WallWood 			21
+#define WallStone			22
+#define WallBrick			23
+#define EntityTrigTrap			24
+
+#define ExitWood			31
+#define ExitStone			32
+
+#define EnemySword			41
+#define EnemyLance			42
+#define EnemyMage			43
+#define EnemyNotInit			50
+
+#define EntityFireball			51
+#define EntityTrap			52
+
+// Fonctions
+
+// is isCategory examples : 
+
+int isFloor (int id)
+{
+	if (id >=11 && id <= 20){return(1)}
+	else{return(0);}
+}
+
+int isWall (int id)
+{
+	if (id >=21 && id <= 30){return(1)}
+	else{return(0);}
+}
+
+int isExit (int id)
+{
+	if (id >=31 && id <= 40){return(1)}
+	else{return(0);}
+}
+
+int isEnemy (int id)
+{
+	if (id >=41 && id <= 50){return(1)}
+	else{return(0);}
+}
+
+int isEntity (int id)
+{
+	if (id >=51 && id <= 60){return(1)}
+	else{return(0);}
+}
+
+int CanWalk (int id)
+{
+	if ( (isFloor(id) == 1) || (isExit(id) == 1) || (isEntity(id) == 1)){return(1);}
+	else {return(0);}
+}
+	
