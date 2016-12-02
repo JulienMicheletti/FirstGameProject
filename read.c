@@ -11,6 +11,9 @@ FILE*	selectNiveau(FILE* fichier, int select)
     fichier = fopen("niveaux/niveau.lvl", "r");
   else if (select == 1)
     fichier = fopen("niveaux/niveau2.lvl", "r");
+  else if (select == 2)
+    fichier = fopen("niveaux/niveau3.lvl", "r");
+    
   return (fichier);
 }
 
@@ -18,12 +21,14 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 {
   char	*chaine;
   char	*stock;
+  char	*tmp;
   int	taille = 0;
   FILE*	fichier = NULL;
   int	i = 0, j = 0, len;
 
-  chaine = (char*)malloc((10000) * sizeof(char));
-  stock = (char*)malloc((10000) * sizeof(char));
+  chaine = (char*)malloc((1000) * sizeof(char));
+  stock = (char*)malloc((1000) * sizeof(char));
+  tmp = (char*)malloc((1000) * sizeof(char));
   fichier = selectNiveau(fichier, select);
   if (fichier == NULL)
     exit(1);
@@ -31,7 +36,15 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
     {
       len = strlen(chaine);
       chaine[(len - 1)] = '\0';
-      strcat(stock, chaine);
+      strcat(tmp, chaine);
+    }
+  for (i = 0 ; tmp[i] ; i++)
+    {
+      if (tmp[i] >= '0' && tmp[i] <= '9')
+	{
+	  stock[j] = tmp[i];
+	  j++;
+	}
     }
   for (i = 0 ; i < NB_BLOCS_LARGEUR ; i++)
     {
@@ -54,6 +67,9 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 	  
 	}
     }
+  free(stock);
+  free(tmp);
+  free(chaine);
   fclose(fichier);
   return 1;
 }

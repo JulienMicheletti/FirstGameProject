@@ -8,18 +8,20 @@
 sprite		init_sprite(sprite sp)
 {  
   sp.mur = IMG_Load("sprites/mur.png");
-  sp.bloc = IMG_Load("sprites/bloc1.png");
-  sp.heros[BAS] = IMG_Load("sprites/devant.png");
-  sp.heros[GAUCHE] = IMG_Load("sprites/gauche1.png");
-  sp.heros[HAUT] = IMG_Load("sprites/arriere.png");
-  sp.heros[DROITE] = IMG_Load("sprites/droite.png");
-  sp.fin = IMG_Load("sprites/porteF.png");
-  sp.finouvert = IMG_Load("sprites/porteO.png");
+  sp.bloc = SDL_LoadBMP("sprites/bloc1.bmp");
+  sp.heros[BAS] = SDL_LoadBMP("sprites/devant.bmp");
+  sp.heros[GAUCHE] = SDL_LoadBMP("sprites/gauche1.bmp");
+  sp.heros[HAUT] = SDL_LoadBMP("sprites/arriere.bmp");
+  sp.heros[DROITE] = SDL_LoadBMP("sprites/droite.bmp");
+  sp.fin = SDL_LoadBMP("sprites/porteF.bmp");
+  sp.finouvert = SDL_LoadBMP("sprites/porteO.bmp");
+  SDL_SetColorKey(sp.finouvert, SDL_SRCCOLORKEY, SDL_MapRGB(sp.finouvert->format, 0, 0, 0));
   sp.vide = IMG_Load("sprites/sol1.png");
   sp.piege = IMG_Load("sprites/piege.png");
-  sp.piegeON = IMG_Load("sprites/arbre.png");
-  sp.levier = IMG_Load("sprites/levier.png");
-  sp.levierON = IMG_Load("sprites/levierON.png");
+  sp.piegeON = SDL_LoadBMP("sprites/arbre.bmp");
+  sp.levier = SDL_LoadBMP("sprites/levier.bmp");
+  SDL_SetColorKey(sp.levier, SDL_SRCCOLORKEY, SDL_MapRGB(sp.levier->format, 255, 255, 255));
+  sp.levierON = SDL_LoadBMP("sprites/levierON.bmp");
   return (sp);
 }
 

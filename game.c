@@ -74,9 +74,9 @@ void	play(SDL_Surface *ecran)
 	      else if (carte[count.i][count.j] == PIEGE)
 	      	SDL_BlitSurface(sp.piege, NULL, ecran, &pos);
 	      else if (carte[count.i][count.j] == PIEGEON)
-	      	SDL_BlitSurface(sp.piegeON, NULL, ecran, &pos);
+		  SDL_BlitSurface(sp.piegeON, NULL, ecran, &pos);
 	      else if (carte[count.i][count.j] == LEVIER)
-		SDL_BlitSurface(sp.levier, NULL, ecran, &pos);
+		  SDL_BlitSurface(sp.levier, NULL, ecran, &pos);
 	      else if (carte[count.i][count.j] == LEVIERON)
 		{
 		  SDL_BlitSurface(sp.levierON, NULL, ecran, &pos);
@@ -96,6 +96,7 @@ void	play(SDL_Surface *ecran)
        SDL_Delay(25);
        pos.x = posPlayer.x * TAILLE_BLOC;
        pos.y = posPlayer.y * TAILLE_BLOC;
+       SDL_SetColorKey(sp.herosActuel, SDL_SRCCOLORKEY, SDL_MapRGB(sp.herosActuel->format, 255, 255, 255));
        SDL_BlitSurface(sp.herosActuel, NULL, ecran, &pos);
        SDL_Flip(ecran);
     }

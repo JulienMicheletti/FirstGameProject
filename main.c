@@ -20,7 +20,7 @@ int	main(int ac, char **av)
   ecran = SDL_SetVideoMode(WIDHT, LENGTH, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   SDL_WM_SetCaption("My game", NULL);
   police = TTF_OpenFont("typo/house.ttf", 100);
-  texte = TTF_RenderText_Blended(police, "The Game", blanc);
+  texte = TTF_RenderText_Blended(police, "Press A to play", blanc);
   while (continuer)
     {
       SDL_WaitEvent(&event);
