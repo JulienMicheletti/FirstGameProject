@@ -23,12 +23,12 @@ void	play(SDL_Surface *ecran)
     {
       SDL_PollEvent(&event);
       if (event.type == SDL_QUIT)
-  	  count.continuer = 0;
-      else if (event.type == SDL_KEYDOWN)
+	exit(1);
+      if (event.type == SDL_KEYDOWN)
 	{
 	  if (event.key.keysym.sym == SDLK_ESCAPE)
-	    count.continuer = 0;
-	  else if (event.key.keysym.sym == SDLK_UP)
+	    exit(1);
+	  if (event.key.keysym.sym == SDLK_UP)
 	    {
   	      sp.herosActuel = sp.heros[HAUT];
 	      moovePlayer(carte, &posPlayer, HAUT, count);
@@ -49,7 +49,7 @@ void	play(SDL_Surface *ecran)
 	      moovePlayer(carte, &posPlayer, DROITE, count);
 	    }
   	}
-      SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+      /* SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255)); */
       count.check = 0;
       for (count.i = 0 ; count.i < NB_BLOCS_LARGEUR ; count.i++)
       	{
