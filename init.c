@@ -13,6 +13,10 @@ sprite		init_sprite(sprite sp)
   sp.heros[GAUCHE] = SDL_LoadBMP("sprites/gauche1.bmp");
   sp.heros[HAUT] = SDL_LoadBMP("sprites/arriere.bmp");
   sp.heros[DROITE] = SDL_LoadBMP("sprites/droite.bmp");
+  sp.heros[HAUTP] = SDL_LoadBMP("sprites/devant_p.bmp");
+  sp.heros[BASP] = SDL_LoadBMP("sprites/arriere_p.bmp");
+  sp.heros[GAUCHEP] = SDL_LoadBMP("sprites/gauche_p.bmp");
+  sp.heros[DROITEP] = SDL_LoadBMP("sprites/droit_p.bmp");
   sp.fin = SDL_LoadBMP("sprites/porteF.bmp");
   sp.finouvert = SDL_LoadBMP("sprites/porteO.bmp");
   sp.vide = IMG_Load("sprites/sol1.png");
@@ -20,11 +24,10 @@ sprite		init_sprite(sprite sp)
   sp.piegeON = SDL_LoadBMP("sprites/arbre.bmp");
   sp.levier = SDL_LoadBMP("sprites/levier.bmp");
   sp.levierON = SDL_LoadBMP("sprites/levierON.bmp");
-  /* SDL_SetColorKey(sp.levier, SDL_SRCCOLORKEY, SDL_MapRGB(sp.levier->format, 255, 255, 255)); */
-  /* SDL_SetColorKey(sp.levierON, SDL_SRCCOLORKEY, SDL_MapRGB(sp.levierON->format, 255, 255, 255)); */
+  sp.casse = SDL_LoadBMP("sprites/casse.bmp");
+  sp.pioche = SDL_LoadBMP("sprites/pioche.bmp");
   SDL_SetColorKey(sp.piegeON, SDL_SRCCOLORKEY, SDL_MapRGB(sp.piegeON->format, 255, 255, 255));
   SDL_SetColorKey(sp.bloc, SDL_SRCCOLORKEY, SDL_MapRGB(sp.bloc->format, 255, 255, 255));
-  /* SDL_SetColorKey(sp.finouvert, SDL_SRCCOLORKEY, SDL_MapRGB(sp.finouvert->format, 255, 255, 255)); */
   return (sp);
 }
 
@@ -36,6 +39,7 @@ compteur	init_compteur(compteur count)
   count.check = 0;
   count.select = 0;
   count.checklevier = 0;
+  count.checkpioche = 0;
   return (count);
 }
 

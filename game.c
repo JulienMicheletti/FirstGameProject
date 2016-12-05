@@ -30,27 +30,40 @@ void	play(SDL_Surface *ecran)
 	    exit(1);
 	  if (event.key.keysym.sym == SDLK_UP)
 	    {
-  	      sp.herosActuel = sp.heros[HAUT];
+	      if (count.checkpioche == 1)
+		sp.herosActuel = sp.heros[HAUT];
+	      else
+	      	sp.herosActuel = sp.heros[BASP];
 	      moovePlayer(carte, &posPlayer, HAUT, count);
 	    }
 	  else if (event.key.keysym.sym == SDLK_DOWN)
 	    {
-  	      sp.herosActuel = sp.heros[BAS];
+	      if (count.checkpioche == 1)
+		sp.herosActuel = sp.heros[BAS];
+	      else
+		sp.herosActuel = sp.heros[HAUTP];
+		
 	      moovePlayer(carte, &posPlayer, BAS, count);
 	    }
 	  else if (event.key.keysym.sym == SDLK_LEFT)
 	    {
-  	      sp.herosActuel = sp.heros[GAUCHE];
+	      if (count.checkpioche == 1)
+		sp.herosActuel = sp.heros[GAUCHE];
+	      else
+		sp.herosActuel = sp.heros[GAUCHEP];
 	      moovePlayer(carte, &posPlayer, GAUCHE, count);
 	    }
 	  else if (event.key.keysym.sym == SDLK_RIGHT)
 	    {
-  	      sp.herosActuel = sp.heros[DROITE];
+	      if (count.checkpioche == 1)
+		sp.herosActuel = sp.heros[DROITE];
+	      else
+		sp.herosActuel = sp.heros[DROITEP];
 	      moovePlayer(carte, &posPlayer, DROITE, count);
 	    }
   	}
-      /* SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255)); */
       count.check = 0;
+      count.checkpioche = 0;
       for (count.i = 0 ; count.i < NB_BLOCS_LARGEUR ; count.i++)
       	{
       	  for (count.j = 0 ; count.j < NB_BLOCS_HAUTEUR ; count.j++)
@@ -82,7 +95,14 @@ void	play(SDL_Surface *ecran)
 		  SDL_BlitSurface(sp.levierON, NULL, ecran, &pos);
 		  count.checklevier = 1;
 		}
-      	    }
+	      else if (carte[count.i][count.j] == CASSE)
+		  SDL_BlitSurface(sp.casse, NULL, ecran, &pos);
+	      else if (carte[count.i][count.j] == PIOCHE)
+		{
+		  count.checkpioche = 1;
+		  SDL_BlitSurface(sp.pioche, NULL, ecran, &pos);
+		}
+	    }
       	}
        if (!count.check)
       	{

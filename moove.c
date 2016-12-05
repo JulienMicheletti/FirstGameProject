@@ -30,21 +30,33 @@ void	mooveUP(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     }
   else if (carte[pos->x][pos->y - 1] == BLOC && (pos->y - 2 < 0 || carte[pos->x][pos->y - 2] != VIDE))
     return;
-      else if (carte[pos->x][pos->y] == PIEGE)
-	{
-	  carte[pos->x][pos->y] = PIEGEON;
-	  return;
-	}
-      else if (carte[pos->x][pos->y - 1] == PIEGEON)
-	return;
-      else if (carte[pos->x][pos->y - 1] == LEVIER || carte[pos->x][pos->y - 1] == LEVIERON)
-	{
-	  carte[pos->x][pos->y - 1] = LEVIERON;
-	  return;
-	}
-      moovebloc(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
-      pos->y--;
+  else if (carte[pos->x][pos->y] == PIEGE)
+    {
+      carte[pos->x][pos->y] = PIEGEON;
       return;
+    }
+  else if (carte[pos->x][pos->y - 1] == PIEGEON)
+    return;
+  else if (carte[pos->x][pos->y - 1] == LEVIER || carte[pos->x][pos->y - 1] == LEVIERON)
+    {
+      carte[pos->x][pos->y - 1] = LEVIERON;
+      return;
+    }
+  else if (carte[pos->x][pos->y] == PIOCHE)
+    {
+      carte[pos->x][pos->y] = VIDE;
+      return;
+    }
+  else if (carte[pos->x][pos->y - 1] == CASSE)
+    {
+      if (count.checkpioche == 0)
+	carte[pos->x][pos->y - 1] = VIDE;
+      else
+	return;
+    }
+  moovebloc(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
+  pos->y--;
+  return;
 }
 
 void	mooveDOWN(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
@@ -70,6 +82,18 @@ void	mooveDOWN(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     {
       carte[pos->x][pos->y + 1] = LEVIERON;
       return;
+    }
+  else if (carte[pos->x][pos->y] == PIOCHE)
+    {
+      carte[pos->x][pos->y] = VIDE;
+      return;
+    }
+  else if (carte[pos->x][pos->y + 1] == CASSE)
+    {
+      if (count.checkpioche == 0)
+	carte[pos->x][pos->y + 1] = VIDE;
+      else
+	return;
     }
   moovebloc(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
   pos->y++;
@@ -100,6 +124,18 @@ void	mooveLEFT(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
       carte[pos->x - 1][pos->y] = LEVIERON;
       return;
     }
+  else if (carte[pos->x][pos->y] == PIOCHE)
+    {
+      carte[pos->x][pos->y] = VIDE;
+      return;
+    }
+  else if (carte[pos->x - 1][pos->y] == CASSE)
+    {
+      if (count.checkpioche == 0)
+	carte[pos->x - 1][pos->y] = VIDE;
+      else
+	return;
+    }
   moovebloc(&carte[pos->x - 1][pos->y], &carte[pos->x - 2][pos->y]);
   pos->x--;
   return;
@@ -127,6 +163,18 @@ void	mooveRIGHT(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     {
       carte[pos->x + 1][pos->y] = LEVIERON;
       return;
+    }
+  else if (carte[pos->x][pos->y] == PIOCHE)
+    {
+      carte[pos->x][pos->y] = VIDE;
+      return;
+    }
+  else if (carte[pos->x + 1][pos->y] == CASSE)
+    {
+      if (count.checkpioche == 0)
+	carte[pos->x + 1][pos->y] = VIDE;
+      else
+	return;
     }
   moovebloc(&carte[pos->x + 1][pos->y], &carte[pos->x + 2][pos->y]);
   pos->x++;
