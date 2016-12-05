@@ -19,7 +19,7 @@ void	play(SDL_Surface *ecran)
   if (!chargerNiveau(carte, count.select))
     exit(EXIT_FAILURE);
   posPlayer = PositionJoueur(carte, posPlayer);
-  while (count.continuer)
+  while (count.continuer) //Boucle principale dans laquelle les mouvements sont récupéré les touches que l'on entre
     {
       SDL_PollEvent(&event);
       if (event.type == SDL_QUIT)
@@ -64,7 +64,7 @@ void	play(SDL_Surface *ecran)
   	}
       count.check = 0;
       count.checkpioche = 0;
-      for (count.i = 0 ; count.i < NB_BLOCS_LARGEUR ; count.i++)
+      for (count.i = 0 ; count.i < NB_BLOCS_LARGEUR ; count.i++) //Affichage des différents blocs
       	{
       	  for (count.j = 0 ; count.j < NB_BLOCS_HAUTEUR ; count.j++)
 	    {
@@ -72,7 +72,7 @@ void	play(SDL_Surface *ecran)
       	      pos.y = count.j * TAILLE_BLOC;
 	      if (carte[count.i][count.j] == MUR)
 	      	SDL_BlitSurface(sp.mur, NULL, ecran, &pos);
-	      else if (carte[count.i][count.j] == FIN)
+	      else if (carte[count.i][count.j] == FIN && count.select != 3)
 	      	{
 		  if (count.checklevier == 1)
 		    SDL_BlitSurface(sp.finouvert, NULL, ecran, &pos);
@@ -102,15 +102,20 @@ void	play(SDL_Surface *ecran)
 		  count.checkpioche = 1;
 		  SDL_BlitSurface(sp.pioche, NULL, ecran, &pos);
 		}
+	      else if (carte[count.i][count.j] == COFFRE && count.select == 3)
+		{
+		  SDL_BlitSurface(sp.coffre, NULL, ecran, &pos);
+		  count.check = 1;
+		}
 	    }
       	}
-       if (!count.check)
+      if (!count.check) //Si on ne trouve plus de porte dans le niveau, on passe au suivant 
       	{
       	  count.select++;
-      	  if (count.select == 3)
+    	  if (count.select == 4)
       	    count.continuer = 0;
       	  chargerNiveau(carte, count.select);
-      	  posPlayer = PositionJoueur(carte, posPlayer);
+      	  posPlayer = PositionJoueur(carte, posPlayer); //On réinitialise les coo du joueur
 	  count.checklevier = 0;
       	}
        SDL_Delay(25);

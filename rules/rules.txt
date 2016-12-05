@@ -1,0 +1,18 @@
+Bonjour et bienvenue !
+
+Dans ce jeu nous vous proposons de partir à la chasse du coffre caché il y a plusieurs années par un célèbre capitaine pirate! Parcourez les différents niveaux et explorez ce donjon pour trouver ce magnifique trésor.
+Cependant, attention ! La légende raconte que des pièges ont été déposés il y a bien longtemps et qu'il vous faudra résoudre certaine énigmes dans le but d'ouvrir les portes qui vous permettront d'avancer.
+
+
+Récapitulatif du fonctionnement:
+
+Différents blocs sont à votre disposition. Vous pouvez en pousser et même en détruire certain à l'aide des pioches positionnées à chaque niveau.
+Il est nécessaire d'activer les leviers pour ouvrir les portes de chaque niveaux.
+
+Si vous trouvez le coffre, vous gagnez.
+
+PS: Attention aux coins d'herbes... la légende raconte que la terre est assez fertile pour y faire pousser des arbres en un clin d'oeil.
+
+Bonne chance et bon jeu !
+
+Micheletti Julien/Maury Alexandre

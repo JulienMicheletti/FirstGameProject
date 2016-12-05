@@ -8,7 +8,7 @@
 #define LENGTH			TAILLE_BLOC * NB_BLOCS_HAUTEUR
 
 enum{HAUT, BAS, GAUCHE, DROITE, HAUTP, BASP, DROITEP, GAUCHEP};
-enum{VIDE, MUR, HEROS, FIN, BLOC, PIEGE, LEVIER, CASSE, PIOCHE, PIEGEON, LEVIERON};
+enum{VIDE, MUR, HEROS, FIN, BLOC, PIEGE, LEVIER, CASSE, PIOCHE, COFFRE, PIEGEON, LEVIERON};
 
 typedef struct sprite sprite;
 struct	sprite
@@ -26,6 +26,8 @@ struct	sprite
   SDL_Surface	*levierON;
   SDL_Surface	*pioche;
   SDL_Surface	*casse;
+  SDL_Surface	*coffre;
+  
 };
 
 typedef struct compteur compteur;

@@ -13,6 +13,8 @@ FILE*	selectNiveau(FILE* fichier, int select)
     fichier = fopen("niveaux/niveau2.lvl", "r");
   else if (select == 2)
     fichier = fopen("niveaux/niveau3.lvl", "r");
+  else if (select == 3)
+    fichier = fopen("niveaux/niveau4.lvl", "r");
   else
     fichier = fopen("niveaux/niveau.lvl", "r");
   return (fichier);
@@ -69,6 +71,8 @@ int	chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR], int select)
 	    niveau[j][i] = 7;
 	  if (stock[(i * NB_BLOCS_LARGEUR) + j] == '8')
 	    niveau[j][i] = 8;
+	  if (stock[(i * NB_BLOCS_LARGEUR) + j] == '9')
+	    niveau[j][i] = 9;
 	}
     }
   free(stock);

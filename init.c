@@ -5,7 +5,7 @@
 #include "constantes.h"
 #include "game.h"
 
-sprite		init_sprite(sprite sp)
+sprite		init_sprite(sprite sp) //Initialisation des sprites
 {  
   sp.mur = IMG_Load("sprites/mur1.png");
   sp.bloc = SDL_LoadBMP("sprites/bloc1.bmp");
@@ -26,12 +26,12 @@ sprite		init_sprite(sprite sp)
   sp.levierON = SDL_LoadBMP("sprites/levierON.bmp");
   sp.casse = SDL_LoadBMP("sprites/casse.bmp");
   sp.pioche = SDL_LoadBMP("sprites/pioche.bmp");
+  sp.coffre = SDL_LoadBMP("sprites/coffre.bmp");
   SDL_SetColorKey(sp.piegeON, SDL_SRCCOLORKEY, SDL_MapRGB(sp.piegeON->format, 255, 255, 255));
-  SDL_SetColorKey(sp.bloc, SDL_SRCCOLORKEY, SDL_MapRGB(sp.bloc->format, 255, 255, 255));
   return (sp);
 }
 
-compteur	init_compteur(compteur count)
+compteur	init_compteur(compteur count) //Initialisation des compteurs utilisés dans le prog
 {
   count.continuer = 1;
   count.i = 0;
@@ -44,7 +44,7 @@ compteur	init_compteur(compteur count)
 }
 
 
-SDL_Rect	PositionJoueur(int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR], SDL_Rect posPlayer)
+SDL_Rect	PositionJoueur(int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR], SDL_Rect posPlayer) //On cherche dans le double tableau la position du joueur
 {
   int	i = 0, j = 0;
   

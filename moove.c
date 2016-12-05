@@ -7,7 +7,7 @@
 
 void	moovebloc(int *first, int *second)
 {
-  if (*first == BLOC && *second == VIDE)
+  if (*first == BLOC && *second == VIDE) //Fonction permettant le déplacement des blocs. On vérifie si le bloc n'est pas suivit d'une autre entité avant le déplacement. 
     {
       *second = BLOC;
       *first = VIDE;
@@ -21,9 +21,9 @@ void	mooveUP(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     return;
   else if (carte[pos->x][pos->y - 1] == MUR)
     return;
-  else if (carte[pos->x][pos->y - 1] == FIN)
+  else if (carte[pos->x][pos->y - 1] == FIN || carte[pos->x][pos->y - 1] == COFFRE)
     {
-      if (count.checklevier == 1)
+      if (count.checklevier == 1 || carte[pos->x][pos->y - 1] == COFFRE)
 	carte[pos->x][pos->y - 1] = VIDE;
       else
 	return;
@@ -65,9 +65,9 @@ void	mooveDOWN(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     return;
   else if (carte[pos->x][pos->y + 1] == MUR)
     return;
-  else if (carte[pos->x][pos->y + 1] == FIN)
+  else if (carte[pos->x][pos->y + 1] == FIN || carte[pos->x][pos->y + 1] == COFFRE)
     {
-      if (count.checklevier == 1)
+      if (count.checklevier == 1 || carte[pos->x][pos->y + 1] == COFFRE)
 	carte[pos->x][pos->y + 1] = VIDE;
       else
 	return;
@@ -106,9 +106,9 @@ void	mooveLEFT(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     return;
   else if (carte[pos->x - 1][pos->y] == MUR)
     return;
-  else if (carte[pos->x - 1][pos->y] == FIN)
+  else if (carte[pos->x - 1][pos->y] == FIN || carte[pos->x - 1][pos->y] == COFFRE)
     {
-      if (count.checklevier == 1)
+      if (count.checklevier == 1 || carte[pos->x - 1][pos->y] == COFFRE)
 	carte[pos->x - 1][pos->y] = VIDE;
       else
 	return;
@@ -146,9 +146,9 @@ void	mooveRIGHT(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
     return;
   else if (carte[pos->x + 1][pos->y] == MUR)
     return;
-  else if (carte[pos->x + 1][pos->y] == FIN)
+  else if (carte[pos->x + 1][pos->y] == FIN || carte[pos->x + 1][pos->y] == COFFRE)
     {
-      if (count.checklevier == 1)
+      if (count.checklevier == 1 || carte[pos->x + 1][pos->y] == COFFRE)
 	carte[pos->x + 1][pos->y] = VIDE;
       else
 	return;
@@ -181,9 +181,9 @@ void	mooveRIGHT(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, compteur count)
   return;
 }
 
-void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction, compteur count)
+void	moovePlayer(int carte[][NB_BLOCS_HAUTEUR], SDL_Rect *pos, int direction, compteur count) //Fonction permettant le déplacement du joueur, on vérifie au cas par cas toutes les éventualités en parcourant la carte case par case dans les fonctions "moove"
 {
-  if (direction == HAUT)
+  if (direction == HAUT) 
     mooveUP(carte, pos, count);
   else if (direction == BAS)
     mooveDOWN(carte, pos, count);
